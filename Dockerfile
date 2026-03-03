@@ -31,5 +31,5 @@ ENV HOSTNAME="0.0.0.0"
 # Set Prisma database URL to a persistent path mapped to a host volume
 ENV DATABASE_URL="file:/app/data/dev.db"
 
-# The start command pushes the DB schema so SQLite is correctly configured, then starts Next.js
-CMD ["sh", "-c", "npx prisma db push && npm run start"]
+# The start command pushes the DB schema so SQLite is correctly configured, seeds the database, then starts Next.js
+CMD ["sh", "-c", "npx prisma db push && npx tsx prisma/seed.ts && npm run start"]
