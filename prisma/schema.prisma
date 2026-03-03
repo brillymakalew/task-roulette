@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  username      String   @unique
+  password_hash String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  tasks            Task[]
+  dailyTaskStates  DailyTaskState[]
+}
+
+model Task {
+  id             Int       @id @default(autoincrement())
+  user_id        Int
+  title          String
+  status         String    @default("active") // "active", "archived"
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  completed_at   DateTime?
+
+  user           User      @relation(fields: [user_id], references: [id])
+  dailyTaskState DailyTaskState[]
+}
+
+model DailyTaskState {
+  id              Int      @id @default(autoincrement())
+  user_id         Int
+  date_key        String   // "YYYY-MM-DD"
+  current_task_id Int?
+  reroll_count    Int      @default(0)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  user            User     @relation(fields: [user_id], references: [id])
+  current_task    Task?    @relation(fields: [current_task_id], references: [id], onDelete: SetNull)
+
+  @@unique([user_id, date_key])
+}
