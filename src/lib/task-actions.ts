@@ -6,7 +6,10 @@ import { revalidatePath } from 'next/cache'
 
 async function getUserId() {
     const session = await auth()
-    if (!session?.user?.id) throw new Error('Unauthorized')
+    if (!session || !session.user || !session.user.id) {
+        const { redirect } = await import('next/navigation')
+        redirect('/login')
+    }
     return parseInt(session.user.id, 10)
 }
 
