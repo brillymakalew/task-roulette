@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  task-roulette:
+    build: .
+    container_name: task-roulette-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - task-roulette-data:/app/data
+    environment:
+      # Use a volume-mounted path for the SQLite database so it persists across container restarts
+      - DATABASE_URL=file:/app/data/dev.db
+      - AUTH_SECRET=super-secret-key-replace-in-production
+    restart: unless-stopped
+
+volumes:
+  task-roulette-data:
