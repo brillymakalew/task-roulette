@@ -12,9 +12,9 @@ services:
       # Use a volume-mounted path for the SQLite database so it persists across container restarts
       - DATABASE_URL=file:/app/data/dev.db
       - AUTH_SECRET=super-secret-key-replace-in-production
-      - AUTH_TRUST_HOST=http://43.133.142.153:3000,http://localhost:3000,true
-      - NEXTAUTH_URL=http://43.133.142.153:3000
-      - NEXT_PUBLIC_APP_URL=http://43.133.142.153:3000
+      - AUTH_TRUST_HOST=https://task.brillyandro.com,http://localhost:3000,true
+      - NEXTAUTH_URL=https://task.brillyandro.com
+      - NEXT_PUBLIC_APP_URL=https://task.brillyandro.com
     restart: unless-stopped
 
 volumes:
